@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energy Records - Renewable Energy Usage Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+        </div>
+        <div>
+          <div class="sidebar-brand-title">Renewable Tracker</div>
+          <div class="sidebar-brand-subtitle">Clean Energy Platform</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="dashboard.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Dashboard
+        </a>
+        <a href="records.html" class="nav-link active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          Energy Records
+        </a>
+        <a href="add-energy.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          Add Energy Data
+        </a>
+
+        <div class="nav-section-title">Analysis & Insights</div>
+        <a href="analytics.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          Analytics & Trends
+        </a>
+        <a href="sources.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+          Renewable Sources
+        </a>
+        <a href="goals.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          Goals
+        </a>
+        <a href="environmental.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path></svg>
+          Environmental Impact
+        </a>
+        <a href="savings.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          Savings
+        </a>
+        <a href="insights.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Smart Insights
+        </a>
+
+        <div class="nav-section-title">Account</div>
+        <a href="profile.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Profile
+        </a>
+        <a href="settings.html" class="nav-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary btn-sm" style="width: 100%; justify-content: flex-start;" onclick="Auth.logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="mobile-menu-btn" class="mobile-menu-toggle" aria-label="Toggle Navigation">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <span style="font-weight: 700; font-size: 1.125rem;">Energy Records Master</span>
+        </div>
+
+        <div class="topbar-right">
+          <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="UI.toggleTheme()" title="Toggle Theme"></button>
+          <div class="user-profile-badge">
+            <div id="topbar-user-avatar" class="user-avatar">U</div>
+            <span id="topbar-user-name" class="user-name-text">Alex Green</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Energy Records</h1>
+            <p class="page-subtitle">Every individual entry is preserved independently. View, filter, edit, or export records.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" onclick="exportRecordsCSV()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export CSV
+            </button>
+            <a href="add-energy.html" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add Energy Data
+            </a>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <!-- Source Filter -->
+            <select id="filter-source" class="form-select" style="width: auto;">
+              <option value="">All Sources</option>
+              <option value="Solar">Solar</option>
+              <option value="Wind">Wind</option>
+              <option value="Hydro">Hydro</option>
+              <option value="Biomass">Biomass</option>
+              <option value="Geothermal">Geothermal</option>
+              <option value="Other Renewable">Other Renewable</option>
+            </select>
+
+            <!-- Time Preset Filter -->
+            <select id="filter-time" class="form-select" style="width: auto;">
+              <option value="">All Time</option>
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="this_week">This Week</option>
+              <option value="this_month">This Month</option>
+              <option value="this_year">This Year</option>
+              <option value="custom">Custom Date Range</option>
+            </select>
+
+            <!-- Custom Date Range Fields (hidden by default) -->
+            <div id="custom-date-range-fields" style="display: none; align-items: center; gap: 0.5rem;">
+              <input type="date" id="filter-start-date" class="form-control" style="width: auto;" title="Start Date">
+              <span class="text-muted">to</span>
+              <input type="date" id="filter-end-date" class="form-control" style="width: auto;" title="End Date">
+            </div>
+          </div>
+
+          <div class="toolbar-group">
+            <!-- Search notes & source -->
+            <div class="search-wrap">
+              <span class="search-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </span>
+              <input type="text" id="filter-search" class="form-control" placeholder="Search source or notes...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculated Summary of Filtered Data -->
+        <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="badge badge-neutral" id="summary-record-count">0 Records</span>
+            <span class="text-xs text-muted">(Aggregation calculated across filtered set)</span>
+          </div>
+          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.8125rem;">
+            <div><span class="text-muted">Total Generated:</span> <strong id="summary-total-gen" class="text-primary">0.0 kWh</strong></div>
+            <div><span class="text-muted">Total Consumed:</span> <strong id="summary-total-ren">0.0 kWh</strong></div>
+            <div><span class="text-muted">Surplus Generated:</span> <strong id="summary-total-surplus" class="text-primary">+0.0 kWh</strong></div>
+            <div><span class="text-muted">CO2 Avoided:</span> <strong id="summary-total-co2">0.0 kg</strong></div>
+            <div><span class="text-muted">Est. Savings:</span> <strong id="summary-total-savings">₹0.00</strong></div>
+          </div>
+        </div>
+
+        <!-- Main Records Table Card -->
+        <div class="card">
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Source</th>
+                    <th>Mode</th>
+                    <th>Generated (kWh)</th>
+                    <th>Renewable Consumed</th>
+                    <th>Storage Used</th>
+                    <th>Surplus</th>
+                    <th>Grid Consumed</th>
+                    <th>Renewable %</th>
+                    <th>Est. Savings</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="records-tbody">
+                  <tr><td colspan="12" class="text-center text-muted" style="padding: 2.5rem;">Loading energy records...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="pagination-wrap" id="records-pagination"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- View Record Modal -->
+  <div id="view-record-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Record Details (<span id="view-id">#</span>)</h3>
+        <button class="btn btn-sm btn-secondary" onclick="UI.closeModal('view-record-modal')">&times;</button>
+      </div>
+      <div class="modal-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div><div class="text-xs text-muted">Date</div><strong id="view-date">-</strong></div>
+        <div><div class="text-xs text-muted">Renewable Source</div><strong id="view-source">-</strong></div>
+        <div><div class="text-xs text-muted">Generation Mode</div><strong id="view-mode">-</strong></div>
+        <div><div class="text-xs text-muted">Energy Generated</div><strong id="view-gen" class="text-primary">-</strong></div>
+        <div><div class="text-xs text-muted">Automatic Expected</div><strong id="view-auto-gen">-</strong></div>
+        <div><div class="text-xs text-muted">Override Value</div><strong id="view-override-gen">-</strong></div>
+        <div><div class="text-xs text-muted">Renewable Consumed</div><strong id="view-ren-con">-</strong></div>
+        <div><div class="text-xs text-muted">Storage Dispatched</div><strong id="view-stor-used">-</strong></div>
+        <div><div class="text-xs text-muted">Daily Surplus Stored</div><strong id="view-surplus" class="text-primary">-</strong></div>
+        <div><div class="text-xs text-muted">Ending Storage Balance</div><strong id="view-storage-bal">-</strong></div>
+        <div><div class="text-xs text-muted">Grid Consumed</div><strong id="view-grid-con">-</strong></div>
+        <div><div class="text-xs text-muted">Total Consumed</div><strong id="view-tot-con">-</strong></div>
+        <div><div class="text-xs text-muted">Renewable Share</div><strong id="view-pct">-</strong></div>
+        <div><div class="text-xs text-muted">Applied Tariff</div><strong id="view-tariff">-</strong></div>
+        <div><div class="text-xs text-muted">Estimated CO2 Avoided</div><strong id="view-co2">-</strong></div>
+        <div><div class="text-xs text-muted">Estimated Cost Savings</div><strong id="view-savings">-</strong></div>
+        <div style="grid-column: 1 / -1;"><div class="text-xs text-muted">Notes / Telemetry</div><p id="view-notes" style="font-size: 0.875rem; margin-top: 0.25rem;">-</p></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="UI.closeModal('view-record-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Record Modal -->
+  <div id="edit-record-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <form onsubmit="saveEditedRecord(event)">
+        <input type="hidden" id="edit-record-id">
+        <div class="modal-header">
+          <h3 class="modal-title">Edit Energy Record</h3>
+          <button type="button" class="btn btn-sm btn-secondary" onclick="UI.closeModal('edit-record-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="edit-date">Date</label>
+            <input type="date" id="edit-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-source">Renewable Source</label>
+            <select id="edit-source" class="form-select" required>
+              <option value="Solar">Solar</option>
+              <option value="Wind">Wind</option>
+              <option value="Hydro">Hydro</option>
+              <option value="Biomass">Biomass</option>
+              <option value="Geothermal">Geothermal</option>
+              <option value="Other Renewable">Other Renewable</option>
+            </select>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="edit-gen">Generated (kWh)</label>
+              <input type="number" step="0.01" id="edit-gen" class="form-control" required min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-ren-con">Renewable Consumed (kWh)</label>
+              <input type="number" step="0.01" id="edit-ren-con" class="form-control" required min="0">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="edit-storage-used">Storage Used (kWh)</label>
+              <input type="number" step="0.01" id="edit-storage-used" class="form-control" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-grid-con">Grid Consumed (kWh)</label>
+              <input type="number" step="0.01" id="edit-grid-con" class="form-control" required min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-tariff">Tariff (<span class="currency-sym-label">₹</span>/kWh)</label>
+              <input type="number" step="0.0001" id="edit-tariff" class="form-control" required min="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-notes">Notes</label>
+            <textarea id="edit-notes" class="form-textarea" placeholder="Optional notes..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('edit-record-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div id="delete-confirm-modal" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--danger-text);">Confirm Deletion</h3>
+        <button class="btn btn-sm btn-secondary" onclick="UI.closeModal('delete-confirm-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm text-muted">Are you sure you want to delete this energy record? This action will permanently remove the record from the database.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="UI.closeModal('delete-confirm-modal')">Cancel</button>
+        <button class="btn btn-danger" onclick="executeDeleteRecord()">Delete Record</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/demo-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/records.js"></script>
+</body>
+</html>
