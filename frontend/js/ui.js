@@ -149,6 +149,7 @@ const UI = {
         if (avatarElem) avatarElem.textContent = (user.full_name || user.email || 'U')[0].toUpperCase();
       } catch (e) {}
     }
+  }
 };
 
 if (typeof window !== 'undefined') {

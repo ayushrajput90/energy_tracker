@@ -29,18 +29,19 @@ def client():
     app = create_app(TestConfig)
     with app.app_context():
         db.create_all()
-        user = User(full_name='Test Solar Engineer', email='engineer@renewable.org')
+        user = User()
+        user.full_name = 'Test Solar Engineer'
+        user.email = 'engineer@renewable.org'
         user.set_password('CleanEnergyPass123!')
         db.session.add(user)
         db.session.commit()
 
-        settings = UserSettings(
-            user_id=user.id,
-            electricity_tariff=9.0,
-            currency_code='INR',
-            currency_symbol='₹',
-            co2_emission_factor=0.82
-        )
+        settings = UserSettings()
+        settings.user_id = user.id
+        settings.electricity_tariff = 9.0
+        settings.currency_code = 'INR'
+        settings.currency_symbol = '₹'
+        settings.co2_emission_factor = 0.82
         db.session.add(settings)
         db.session.commit()
 

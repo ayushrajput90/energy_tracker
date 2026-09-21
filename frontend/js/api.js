@@ -56,7 +56,8 @@ const API = {
       // If user is accessing statically without running backend, suggest Demo Mode
       if (err.message && (err.message.includes('Failed to fetch') || err.message.includes('NetworkError') || err.message.includes('Load failed'))) {
         UI.showToast('Backend server not connected. Operating in Demo Mode.', 'info');
-        CONFIG.setDemoMode(true);
+        CONFIG.DEMO_MODE = true;
+        localStorage.setItem('DEMO_MODE', 'true');
         return this.handleDemoRequest(endpoint, options);
       }
       throw err;

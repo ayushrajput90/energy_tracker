@@ -2,8 +2,8 @@
  * Renewable Energy Usage Tracker - Global Configuration
  */
 const CONFIG = {
-  // If frontend is served directly by Flask on port 5000, use relative '/api', else use full URL
-  API_BASE_URL: (window.location.port === '5000' || window.location.port === '') && window.location.hostname !== 'localhost' && window.location.protocol.startsWith('http')
+  // If frontend is served directly by Flask on port 5000 or same-origin host, use relative '/api', else connect to backend server
+  API_BASE_URL: (typeof window !== 'undefined' && (window.location.port === '5000' || (window.location.protocol.startsWith('http') && !['5500', '3000', '8080', '8000'].includes(window.location.port))))
     ? '/api'
     : 'http://127.0.0.1:5000/api',
 

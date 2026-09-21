@@ -41,7 +41,7 @@ def get_generation_overview():
 @jwt_required()
 def get_daily_generation():
     user_id = int(get_jwt_identity())
-    time_filter = request.args.get('time_filter', 'this_month')
+    time_filter = request.args.get('time_filter')
     start_date_str = request.args.get('start_date')
     end_date_str = request.args.get('end_date')
 
@@ -66,7 +66,7 @@ def get_daily_generation():
 @jwt_required()
 def get_weekly_generation():
     user_id = int(get_jwt_identity())
-    time_filter = request.args.get('time_filter', 'this_year')
+    time_filter = request.args.get('time_filter')
     start_date_str = request.args.get('start_date')
     end_date_str = request.args.get('end_date')
 
@@ -91,7 +91,7 @@ def get_weekly_generation():
 @jwt_required()
 def get_monthly_generation():
     user_id = int(get_jwt_identity())
-    time_filter = request.args.get('time_filter', 'this_year')
+    time_filter = request.args.get('time_filter')
     start_date_str = request.args.get('start_date')
     end_date_str = request.args.get('end_date')
 

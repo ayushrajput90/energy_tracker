@@ -83,13 +83,93 @@ def create_app(config_class=Config):
     def server_error(e):
         return jsonify({'error': 'Internal server error'}), 500
 
-    # Auto-create tables within application context
+    # Auto-create tables and seed default demo user if needed
     with app.app_context():
         try:
             db.create_all()
+            # Ensure SQLite schema contains newly added columns if existing DB was created with older schema
+            try:
+                from sqlalchemy import text
+                with db.engine.connect() as conn:
+                    if 'sqlite' in str(db.engine.url):
+                        res = conn.execute(text("PRAGMA table_info(user_settings)")).fetchall()
+                        col_names = [r[1] for r in res]
+                        if col_names and 'currency_code' not in col_names:
+                            conn.execute(text("ALTER TABLE user_settings ADD COLUMN currency_code VARCHAR(10) DEFAULT 'INR'"))
+                            conn.commit()
+                        if col_names and 'currency_symbol' not in col_names:
+                            conn.execute(text("ALTER TABLE user_settings ADD COLUMN currency_symbol VARCHAR(10) DEFAULT 'INR'"))
+                            conn.commit()
+            except Exception:
+                pass
+
             print(f"[Database] Initialized tables successfully. Engine: {app.config.get('DB_ENGINE_TYPE')}")
+            
+            # Auto-seed demo user 'alex@example.com' if not present
+            from backend.models.user import User
+            from backend.models.user_settings import UserSettings
+            from backend.models.renewable_source import RenewableSource, SourceCapacityHistory
+            from datetime import date
+            
+            if not app.config.get('TESTING'):
+                demo_user = User.query.filter_by(email='alex@example.com').first()
+                if not demo_user:
+                    demo_user = User()
+                    demo_user.full_name = 'Alex Green'
+                    demo_user.email = 'alex@example.com'
+                    demo_user.set_password('Password123!')
+                    db.session.add(demo_user)
+                    db.session.flush()
+
+                    settings = UserSettings()
+                    settings.user_id = demo_user.id
+                    settings.electricity_tariff = 9.0
+                    settings.currency_code = 'INR'
+                    settings.currency_symbol = 'INR'
+                    settings.co2_emission_factor = 0.82
+                    db.session.add(settings)
+
+                    solar = RenewableSource()
+                    solar.user_id = demo_user.id
+                    solar.source_type = 'Solar'
+                    solar.installed_capacity_kw = 5.0
+                    solar.expected_daily_generation_kwh = 15.0
+                    solar.effective_from = date.today()
+                    solar.active = True
+                    db.session.add(solar)
+                    db.session.flush()
+
+                    hist1 = SourceCapacityHistory()
+                    hist1.source_id = solar.id
+                    hist1.capacity_kw = 5.0
+                    hist1.expected_daily_generation_kwh = 15.0
+                    hist1.effective_from = date.today()
+                    db.session.add(hist1)
+
+                    wind = RenewableSource()
+                    wind.user_id = demo_user.id
+                    wind.source_type = 'Wind'
+                    wind.installed_capacity_kw = 3.0
+                    wind.expected_daily_generation_kwh = 10.0
+                    wind.effective_from = date.today()
+                    wind.active = True
+                    db.session.add(wind)
+                    db.session.flush()
+
+                    hist2 = SourceCapacityHistory()
+                    hist2.source_id = wind.id
+                    hist2.capacity_kw = 3.0
+                    hist2.expected_daily_generation_kwh = 10.0
+                    hist2.effective_from = date.today()
+                    db.session.add(hist2)
+
+                    db.session.commit()
+                    print("[Database] Seeded demo user 'alex@example.com' with default sources.")
         except Exception as e:
-            print(f"[Database Warning] Error creating tables: {e}")
+            try:
+                print(f"[Database Warning] Error creating tables/seeding: {e}")
+            except Exception:
+                print("[Database Warning] Error creating tables/seeding.")
 
     return app
 
