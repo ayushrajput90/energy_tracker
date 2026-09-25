@@ -387,6 +387,55 @@ const API = {
         });
       }
 
+      if (endpoint.startsWith('/generation/history')) {
+        const urlObj = new URL('http://dummy.com' + endpoint);
+        const srcFilter = urlObj.searchParams.get('source_type');
+        const activeSources = sources.filter(s => {
+          if (srcFilter && srcFilter.trim() && !['all', 'all sources'].includes(srcFilter.trim().toLowerCase())) {
+            return (s.source_type || '').toLowerCase() === srcFilter.trim().toLowerCase();
+          }
+          return true;
+        });
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        const history = [];
+
+        activeSources.forEach(s => {
+          const startStr = s.effective_from || '2026-08-01';
+          let cur = new Date(startStr);
+          const today = new Date(todayStr);
+
+          while (cur <= today) {
+            const curStr = cur.toISOString().split('T')[0];
+            const autoKwh = parseFloat(s.expected_daily_generation_kwh || 0);
+            const ov = overrides.find(o => o.source_id === s.id && o.date === curStr);
+            const isOv = !!ov;
+            const genKwh = isOv ? parseFloat(ov.override_generation_kwh) : autoKwh;
+
+            history.push({
+              source_id: s.id,
+              source_type: s.source_type,
+              date: curStr,
+              generated_kwh: Math.round(genKwh * 100) / 100,
+              automatic_generation_kwh: Math.round(autoKwh * 100) / 100,
+              status: isOv ? 'Override' : 'Auto',
+              is_override: isOv,
+              reason: isOv ? ov.reason : ''
+            });
+
+            cur.setDate(cur.getDate() + 1);
+          }
+        });
+
+        history.sort((a, b) => (b.date > a.date ? 1 : b.date < a.date ? -1 : 0));
+
+        return Promise.resolve({
+          history: history,
+          sources: activeSources,
+          total_count: history.length
+        });
+      }
+
       if (endpoint.startsWith('/generation/daily') || endpoint.startsWith('/generation/weekly') || endpoint.startsWith('/generation/monthly') || endpoint.startsWith('/generation/yearly')) {
         const summary = calcSummary(records);
         return Promise.resolve({
@@ -745,6 +794,11 @@ const API = {
       const totalCap = sources.filter(s => s.active).reduce((sum, s) => sum + parseFloat(s.installed_capacity_kw || 0), 0);
       const totalExp = sources.filter(s => s.active).reduce((sum, s) => sum + parseFloat(s.expected_daily_generation_kwh || 0), 0);
 
+      const dailySeries = aggregateDailySeries(filtered);
+      const chartLabels = dailySeries.map(d => d.date);
+      const chartGen = dailySeries.map(d => d.total_generated_kwh);
+      const chartCon = dailySeries.map(d => d.total_renewable_consumed_kwh);
+
       return Promise.resolve({
         overall: overall,
         period_summary: periodSummary,
@@ -752,6 +806,12 @@ const API = {
         this_month: periodSummary,
         selected_period: period,
         sources_summary: Object.values(sourcesData),
+        chart_data: {
+          labels: chartLabels,
+          generated: chartGen,
+          consumed: chartCon,
+          period: period
+        },
         active_goals: goals.map(g => ({
           id: g.id,
           goal_type: g.goal_type,

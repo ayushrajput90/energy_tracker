@@ -259,6 +259,72 @@ function downloadBlob(blob, filename) {
   a.remove();
 }
 
+let isAutoHistoryExpanded = false;
+
+function toggleAutoGenerationHistory() {
+  const panel = document.getElementById('auto-history-collapse');
+  const btnText = document.getElementById('text-toggle-history');
+  const icon = document.getElementById('icon-toggle-history');
+  if (!panel) return;
+
+  isAutoHistoryExpanded = !isAutoHistoryExpanded;
+  if (isAutoHistoryExpanded) {
+    panel.style.display = 'block';
+    if (btnText) btnText.textContent = 'Hide Automatic Generation History';
+    if (icon) icon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>';
+    loadAutoGenerationHistory();
+  } else {
+    panel.style.display = 'none';
+    if (btnText) btnText.textContent = 'View Automatic Generation History';
+    if (icon) icon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+  }
+}
+
+async function loadAutoGenerationHistory() {
+  const tbody = document.getElementById('auto-history-tbody');
+  const sourceFilter = document.getElementById('auto-history-source-filter')?.value || '';
+  const countBadge = document.getElementById('auto-history-count-badge');
+  if (!tbody) return;
+
+  tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding: 1.5rem;">Loading generation history...</td></tr>`;
+
+  try {
+    const params = {};
+    if (sourceFilter) params.source_type = sourceFilter;
+
+    const data = await API.get('/generation/history', params);
+    const list = data.history || [];
+
+    if (countBadge) {
+      countBadge.textContent = `${list.length} daily entries recorded from configured start date to today`;
+    }
+
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding: 2rem;">No automatic generation history found. Configure renewable sources to start daily tracking.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map(h => {
+      const srcClass = `badge-${(h.source_type || '').toLowerCase().replace(' ', '-')}`;
+      const statusBadge = h.is_override
+        ? `<span class="badge badge-warning" title="${h.reason ? 'Reason: ' + h.reason : 'Manual Override'}">Override</span>`
+        : `<span class="badge badge-neutral">Auto</span>`;
+
+      return `
+        <tr>
+          <td><strong>${h.date}</strong></td>
+          <td><span class="badge ${srcClass}">${h.source_type}</span></td>
+          <td><strong class="text-primary">${(h.generated_kwh || 0).toFixed(1)} kWh</strong></td>
+          <td>${statusBadge}</td>
+        </tr>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error('Failed to load generation history:', err);
+    tbody.innerHTML = `<tr><td colspan="4" class="text-danger text-center" style="padding: 1.5rem;">Could not load automatic generation history.</td></tr>`;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('records-tbody')) {
     loadEnergyRecords();

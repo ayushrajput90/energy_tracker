@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Energy Data & Sources - Renewable Energy Usage Tracker</title>
+  <title>Add Energy Data - Renewable Energy Usage Tracker</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/responsive.css">
@@ -19,7 +19,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
         </div>
         <div>
-          <div class="sidebar-brand-title">Renewable Tracker</div>
+          <div class="sidebar-brand-title">Renewable Energy Usage Tracker</div>
           <div class="sidebar-brand-subtitle">Clean Energy Platform</div>
         </div>
       </div>
@@ -107,127 +107,33 @@
         <div class="page-header">
           <div>
             <h1 class="page-title">Add Energy Data & Sources</h1>
-            <p class="page-subtitle">Automatic generation telemetry, capacity history preservation, manual weather overrides, and energy storage tracking</p>
+            <p class="page-subtitle">Automatic generation telemetry, source capacity management, and consumption logging</p>
           </div>
         </div>
 
-        <!-- 2 Columns Grid: Left Sections (1 to 6) | Right Section 7 (Live Preview) -->
-        <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 2rem; align-items: start;">
-          <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+        <!-- Single Streamlined Clean Container -->
+        <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
 
-            <!-- ======================================================== -->
-            <!-- 1. RENEWABLE SOURCE CONFIGURATION                        -->
-            <!-- ======================================================== -->
-            <div class="card" id="source-config-card">
-              <div class="card-header">
-                <div class="step-header">
-                  <span class="step-badge">1</span>
-                  <div>
-                    <h3 class="card-title" style="margin: 0;">Renewable Source Configuration</h3>
-                    <p class="text-xs text-muted" style="margin: 0;">Configure your power sources to enable automatic daily generation tracking</p>
-                  </div>
-                </div>
-                <span class="badge badge-success" id="active-sources-badge">0 Active Sources</span>
-              </div>
-              <div class="card-body">
-                <form id="source-config-form" onsubmit="handleSaveSourceConfig(event)">
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                      <label class="form-label" for="cfg-source-type">Source Type *</label>
-                      <select id="cfg-source-type" class="form-select" required>
-                        <option value="Solar">Solar</option>
-                        <option value="Wind">Wind</option>
-                        <option value="Hydro">Hydro</option>
-                        <option value="Biomass">Biomass</option>
-                        <option value="Geothermal">Geothermal</option>
-                        <option value="Other Renewable">Other Renewable</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label" for="cfg-capacity">Installed Capacity (kW) *</label>
-                      <input type="number" step="0.1" id="cfg-capacity" class="form-control" placeholder="e.g. 5.0" required min="0">
-                    </div>
-                  </div>
-
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                      <label class="form-label" for="cfg-expected-gen">Expected Daily Generation (kWh/day) *</label>
-                      <input type="number" step="0.1" id="cfg-expected-gen" class="form-control" placeholder="e.g. 15.0" required min="0">
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label" for="cfg-effective-from">Effective From *</label>
-                      <input type="date" id="cfg-effective-from" class="form-control" required>
-                      <span class="form-hint">Historical records before this date remain preserved.</span>
-                    </div>
-                  </div>
-
-                  <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 0.5rem;">
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="resetSourceConfigForm()">
-                      + Add Another Source
-                    </button>
-                    <button type="submit" id="btn-save-source-cfg" class="btn btn-primary btn-sm">
-                      Save Source Configuration
-                    </button>
-                  </div>
-                </form>
-
-                <!-- Configured Sources List / Cards -->
-                <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
-                  <div style="font-weight: 700; font-size: 0.875rem; margin-bottom: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-                    <span>Configured Renewable Sources</span>
-                    <span class="text-xs text-muted">Click 'View History' to see capacity changes</span>
-                  </div>
-                  <div id="configured-sources-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <div class="text-sm text-muted">Loading configured sources...</div>
-                  </div>
+          <!-- ======================================================== -->
+          <!-- 1. RENEWABLE SOURCE CONFIGURATION                        -->
+          <!-- ======================================================== -->
+          <div class="card" id="source-config-card">
+            <div class="card-header">
+              <div class="step-header">
+                <span class="step-badge">1</span>
+                <div>
+                  <h3 class="card-title" style="margin: 0;">Renewable Source Configuration</h3>
+                  <p class="text-xs text-muted" style="margin: 0;">Configure your power sources to enable automatic daily generation tracking</p>
                 </div>
               </div>
+              <span class="badge badge-success" id="active-sources-badge">0 Active Sources</span>
             </div>
-
-            <!-- ======================================================== -->
-            <!-- 2. AUTOMATIC DAILY GENERATION                            -->
-            <!-- ======================================================== -->
-            <div class="card" id="daily-gen-card">
-              <div class="card-header">
-                <div class="step-header">
-                  <span class="step-badge">2</span>
-                  <div>
-                    <h3 class="card-title" style="margin: 0;">Automatic Daily Generation</h3>
-                    <p class="text-xs text-muted" style="margin: 0;">Normal generation is automatically computed from your active source capacity</p>
-                  </div>
-                </div>
-                <span class="badge badge-success" id="auto-telemetry-badge">⚡ Automatic Active</span>
-              </div>
-              <div class="card-body">
-                <div class="telemetry-banner">
-                  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                    <div>
-                      <div class="text-xs text-muted font-semibold uppercase" style="letter-spacing: 0.05em;">Expected Generation for Selected Date</div>
-                      <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary-600); margin-top: 0.15rem;">
-                        <span id="display-auto-gen">15.0</span> <span style="font-size: 1rem; font-weight: 600;">kWh</span>
-                      </div>
-                      <div class="text-xs text-muted" id="auto-gen-source-note" style="margin-top: 0.2rem;">
-                        Calculated from configured Solar (5.0 kW capacity)
-                      </div>
-                    </div>
-                    <div style="background: rgba(16, 185, 129, 0.15); border-radius: var(--radius-md); padding: 0.5rem 0.875rem; text-align: right;">
-                      <div class="text-xs font-bold text-primary" style="text-transform: uppercase;">Zero Daily Entry</div>
-                      <div class="text-xs text-muted">Auto-tracked daily</div>
-                    </div>
-                  </div>
-                </div>
-
+            <div class="card-body">
+              <form id="source-config-form" onsubmit="handleSaveSourceConfig(event)">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                   <div class="form-group">
-                    <label class="form-label" for="record-date">Date *</label>
-                    <input type="date" id="record-date" class="form-control" required onchange="handleDateOrSourceChange()">
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label" for="record-source">Renewable Source *</label>
-                    <select id="record-source" class="form-select" required onchange="handleDateOrSourceChange()">
+                    <label class="form-label" for="cfg-source-type">Source Type *</label>
+                    <select id="cfg-source-type" class="form-select" required>
                       <option value="Solar">Solar</option>
                       <option value="Wind">Wind</option>
                       <option value="Hydro">Hydro</option>
@@ -236,160 +142,208 @@
                       <option value="Other Renewable">Other Renewable</option>
                     </select>
                   </div>
-                </div>
 
-                <!-- ======================================================== -->
-                <!-- 3. MANUAL DAILY OVERRIDE                                -->
-                <!-- ======================================================== -->
-                <div style="background-color: var(--bg-surface-subtle); border-radius: var(--radius-lg); padding: 1.125rem; border: 1px solid var(--border-subtle); margin-top: 0.75rem;">
-                  <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <div class="step-header">
-                      <span class="step-badge warning" style="width: 24px; height: 24px; font-size: 0.75rem;">3</span>
-                      <div>
-                        <span style="font-weight: 700; font-size: 0.9375rem;">Manual Daily Override</span>
-                        <span class="text-xs text-muted" style="display: block;">Use only if weather, rain, or maintenance changed output for this specific date</span>
-                      </div>
-                    </div>
-                    <label class="checkbox-label" style="margin: 0; cursor: pointer; background: var(--bg-surface); padding: 0.35rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-strong);">
-                      <input type="checkbox" id="chk-enable-override" onchange="toggleOverrideFields()">
-                      <span class="form-label" style="margin: 0; font-weight: 700; color: #f59e0b;">Override today's generation</span>
-                    </label>
-                  </div>
-
-                  <!-- Override Inputs (Visible when checked) -->
-                  <div id="override-fields-box" style="display: none; margin-top: 1rem; border-top: 1px dashed var(--border-strong); padding-top: 1rem;">
-                    <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1rem;">
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" for="record-actual-gen">Override Generation (kWh) *</label>
-                        <input type="number" step="0.1" id="record-actual-gen" class="form-control" placeholder="e.g. 6.0" min="0">
-                      </div>
-                      <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" for="record-override-reason">Reason for Override *</label>
-                        <input type="text" id="record-override-reason" class="form-control" placeholder="e.g. Heavy rain & overcast skies">
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Visual Generation Comparison Display -->
-                  <div class="gen-comparison-grid">
-                    <div class="comparison-box">
-                      <div class="comp-label">Automatic Generation</div>
-                      <div class="comp-val" id="lbl-auto-val">15.0 kWh</div>
-                    </div>
-                    <div class="comparison-box">
-                      <div class="comp-label">Manual Override</div>
-                      <div class="comp-val" id="lbl-override-val" style="color: #f59e0b;">None</div>
-                    </div>
-                    <div class="comparison-box highlight">
-                      <div class="comp-label">Final Generation</div>
-                      <div class="comp-val" id="lbl-final-val">15.0 kWh</div>
-                    </div>
+                  <div class="form-group">
+                    <label class="form-label" for="cfg-capacity">Installed Capacity (kW) *</label>
+                    <input type="number" step="0.1" id="cfg-capacity" class="form-control" placeholder="e.g. 5.0" required min="0">
                   </div>
                 </div>
 
-              </div>
-            </div>
-
-            <!-- ======================================================== -->
-            <!-- 4. ENERGY CONSUMPTION & 5. SURPLUS / STORAGE LEDGER     -->
-            <!-- ======================================================== -->
-            <div class="card" id="consumption-storage-card">
-              <div class="card-header">
-                <div class="step-header">
-                  <span class="step-badge info">4 & 5</span>
-                  <div>
-                    <h3 class="card-title" style="margin: 0;">Energy Consumption & Storage Ledger</h3>
-                    <p class="text-xs text-muted" style="margin: 0;">Record usage, calculate today's surplus, and dispatch from battery storage</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <!-- Section 4: Energy Consumption -->
-                <div style="font-weight: 700; font-size: 0.875rem; color: var(--text-main); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
-                  4. Energy Consumption Inputs
-                </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                   <div class="form-group">
-                    <label class="form-label" for="record-ren-con">Renewable Energy Consumed (kWh) *</label>
-                    <input type="number" step="0.1" id="record-ren-con" class="form-control" placeholder="e.g. 10.0" required min="0">
-                    <span class="form-hint">Directly utilized from today's clean power output</span>
+                    <label class="form-label" for="cfg-expected-gen">Expected Daily Generation (kWh/day) *</label>
+                    <input type="number" step="0.1" id="cfg-expected-gen" class="form-control" placeholder="e.g. 15.0" required min="0">
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label" for="record-grid-con">Grid Energy Consumed (kWh) *</label>
-                    <input type="number" step="0.1" id="record-grid-con" class="form-control" placeholder="0.0" value="0.0" min="0">
-                    <span class="form-hint">Supplemental energy drawn from fossil grid</span>
+                    <label class="form-label" for="cfg-effective-from">Effective From *</label>
+                    <input type="date" id="cfg-effective-from" class="form-control" required>
+                    <span class="form-hint">Historical records before this date remain preserved.</span>
                   </div>
                 </div>
 
-                <!-- Section 5: Renewable Surplus & Storage -->
-                <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; margin-top: 0.75rem;">
-                  <div style="font-weight: 700; font-size: 0.875rem; color: var(--text-main); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: space-between;">
-                    <span>5. Renewable Surplus & Storage Ledger</span>
-                    <span class="badge badge-info" id="badge-avail-storage">Available: 0.0 kWh</span>
-                  </div>
+                <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 0.5rem;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="resetSourceConfigForm()">
+                    + Add Another Source
+                  </button>
+                  <button type="submit" id="btn-save-source-cfg" class="btn btn-primary btn-sm">
+                    Save Source Configuration
+                  </button>
+                </div>
+              </form>
 
-                  <!-- Live Formula Banner -->
-                  <div style="background: rgba(2, 132, 199, 0.08); border: 1px solid rgba(2, 132, 199, 0.2); border-radius: var(--radius-md); padding: 0.875rem 1rem; margin-bottom: 1rem;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">
-                      SURPLUS & STORAGE FORMULA:
+              <!-- Configured Sources List -->
+              <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+                <div style="font-weight: 700; font-size: 0.875rem; margin-bottom: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+                  <span>Configured Renewable Sources</span>
+                  <span class="text-xs text-muted">Click 'View History' to see capacity changes</span>
+                </div>
+                <div id="configured-sources-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                  <div class="text-sm text-muted">Loading configured sources...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- 2. DAILY GENERATION & CONSUMPTION LOGGING               -->
+          <!-- ======================================================== -->
+          <div class="card" id="daily-gen-card">
+            <div class="card-header">
+              <div class="step-header">
+                <span class="step-badge">2</span>
+                <div>
+                  <h3 class="card-title" style="margin: 0;">Log Energy Generation & Consumption</h3>
+                  <p class="text-xs text-muted" style="margin: 0;">Automatic expected generation with optional daily manual override and storage dispatch</p>
+                </div>
+              </div>
+              <span class="badge badge-success" id="auto-telemetry-badge">⚡ Automatic Active</span>
+            </div>
+            <div class="card-body">
+              <!-- Expected Generation Banner -->
+              <div class="telemetry-banner" style="margin-bottom: 1.25rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                  <div>
+                    <div class="text-xs text-muted font-semibold uppercase" style="letter-spacing: 0.05em;">Expected Generation for Selected Date</div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary-600); margin-top: 0.15rem;">
+                      <span id="display-auto-gen">15.0</span> <span style="font-size: 1rem; font-weight: 600;">kWh</span>
                     </div>
-                    <div style="font-size: 0.875rem; font-family: monospace; font-weight: 700; color: var(--text-main);">
-                      Previous Storage (<span id="calc-lbl-prev">0.0</span>) + Generation (<span id="calc-lbl-gen">15.0</span>) - Renewable Consumed (<span id="calc-lbl-ren">0.0</span>) = Today's Surplus (<span id="calc-lbl-surplus" class="text-primary">+15.0</span>)
+                    <div class="text-xs text-muted" id="auto-gen-source-note" style="margin-top: 0.2rem;">
+                      Calculated from configured Solar
                     </div>
                   </div>
+                  <div style="background: rgba(16, 185, 129, 0.15); border-radius: var(--radius-md); padding: 0.5rem 0.875rem; text-align: right;">
+                    <div class="text-xs font-bold text-primary" style="text-transform: uppercase;">Zero Daily Entry</div>
+                    <div class="text-xs text-muted">Auto-tracked daily</div>
+                  </div>
+                </div>
+              </div>
 
-                  <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1rem; align-items: center;">
+              <!-- Date & Renewable Source Selection -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="record-date">Date *</label>
+                  <input type="date" id="record-date" class="form-control" required onchange="handleDateOrSourceChange()">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="record-source">Renewable Source *</label>
+                  <select id="record-source" class="form-select" required onchange="handleDateOrSourceChange()">
+                    <option value="Solar">Solar</option>
+                    <option value="Wind">Wind</option>
+                    <option value="Hydro">Hydro</option>
+                    <option value="Biomass">Biomass</option>
+                    <option value="Geothermal">Geothermal</option>
+                    <option value="Other Renewable">Other Renewable</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Optional Manual Daily Override -->
+              <div style="background-color: var(--bg-surface-subtle); border-radius: var(--radius-lg); padding: 1.125rem; border: 1px solid var(--border-subtle); margin-bottom: 1.25rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                  <div>
+                    <span style="font-weight: 700; font-size: 0.9375rem;">Manual Weather Override (Optional)</span>
+                    <span class="text-xs text-muted" style="display: block;">Use only if weather, rain, or maintenance changed output for this date</span>
+                  </div>
+                  <label class="checkbox-label" style="margin: 0; cursor: pointer; background: var(--bg-surface); padding: 0.35rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-strong);">
+                    <input type="checkbox" id="chk-enable-override" onchange="toggleOverrideFields()">
+                    <span class="form-label" style="margin: 0; font-weight: 700; color: #f59e0b;">Override generation</span>
+                  </label>
+                </div>
+
+                <!-- Override Inputs (Visible when checked) -->
+                <div id="override-fields-box" style="display: none; margin-top: 1rem; border-top: 1px dashed var(--border-strong); padding-top: 1rem;">
+                  <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1rem;">
                     <div class="form-group" style="margin-bottom: 0;">
-                      <label class="form-label" for="record-storage-used">Use Stored Renewable Energy (kWh)</label>
-                      <input type="number" step="0.1" id="record-storage-used" class="form-control" placeholder="0.0" value="0.0" min="0">
-                      <span class="form-hint">Dispatched from battery (Cannot exceed available storage balance)</span>
+                      <label class="form-label" for="record-actual-gen">Override Generation (kWh) *</label>
+                      <input type="number" step="0.1" id="record-actual-gen" class="form-control" placeholder="e.g. 6.0" min="0">
                     </div>
-
-                    <div style="background: var(--bg-surface-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-                      <div class="text-xs text-muted font-semibold">Remaining Battery Storage</div>
-                      <div style="font-size: 1.25rem; font-weight: 800; color: #0284c7;" id="lbl-rem-storage-calc">0.0 kWh</div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label" for="record-override-reason">Reason for Override *</label>
+                      <input type="text" id="record-override-reason" class="form-control" placeholder="e.g. Heavy rain & overcast skies">
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- ======================================================== -->
-            <!-- 6. ELECTRICITY TARIFF & CURRENCY                        -->
-            <!-- ======================================================== -->
-            <div class="card" id="tariff-currency-card">
-              <div class="card-header">
-                <div class="step-header">
-                  <span class="step-badge">6</span>
-                  <div>
-                    <h3 class="card-title" style="margin: 0;">Electricity Tariff & Currency</h3>
-                    <p class="text-xs text-muted" style="margin: 0;">Selected currency and tariff rate apply dynamically to savings and exports</p>
+                <!-- Generation Comparison -->
+                <div class="gen-comparison-grid" style="margin-top: 1rem;">
+                  <div class="comparison-box">
+                    <div class="comp-label">Automatic Generation</div>
+                    <div class="comp-val" id="lbl-auto-val">15.0 kWh</div>
+                  </div>
+                  <div class="comparison-box">
+                    <div class="comp-label">Manual Override</div>
+                    <div class="comp-val" id="lbl-override-val" style="color: #f59e0b;">None</div>
+                  </div>
+                  <div class="comparison-box highlight">
+                    <div class="comp-label">Final Generation</div>
+                    <div class="comp-val" id="lbl-final-val">15.0 kWh</div>
                   </div>
                 </div>
               </div>
-              <div class="card-body">
+
+              <!-- Renewable Consumption Input -->
+              <div style="margin-bottom: 1.25rem;">
+                <div class="form-group">
+                  <label class="form-label" for="record-ren-con" style="font-weight: 700; font-size: 0.9375rem;">Renewable Energy Consumed (kWh) *</label>
+                  <input type="number" step="0.1" id="record-ren-con" class="form-control" placeholder="e.g. 10.0" required min="0">
+                  <span class="form-hint">Directly utilized from clean renewable generation</span>
+                </div>
+              </div>
+
+              <!-- Storage & Surplus Ledger -->
+              <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; margin-bottom: 1.25rem;">
+                <div style="font-weight: 700; font-size: 0.875rem; color: var(--text-main); margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+                  <span>Renewable Surplus & Storage</span>
+                  <span class="badge badge-info" id="badge-avail-storage">Available Storage: 0.0 kWh</span>
+                </div>
+
+                <!-- Live Formula Banner -->
+                <div style="background: rgba(2, 132, 199, 0.08); border: 1px solid rgba(2, 132, 199, 0.2); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1rem;">
+                  <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.25rem;">
+                    SURPLUS FORMULA:
+                  </div>
+                  <div style="font-size: 0.8125rem; font-family: monospace; font-weight: 700; color: var(--text-main);">
+                    Previous Storage (<span id="calc-lbl-prev">0.0</span>) + Generation (<span id="calc-lbl-gen">15.0</span>) - Renewable Consumed (<span id="calc-lbl-ren">0.0</span>) = Today's Surplus (<span id="calc-lbl-surplus" class="text-primary">+15.0</span>)
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1rem; align-items: center;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="record-storage-used">Use Stored Renewable Energy (kWh)</label>
+                    <input type="number" step="0.1" id="record-storage-used" class="form-control" placeholder="0.0" value="0.0" min="0">
+                    <span class="form-hint">Dispatched from battery (Cannot exceed available storage)</span>
+                  </div>
+
+                  <div style="background: var(--bg-surface-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                    <div class="text-xs text-muted font-semibold">Remaining Battery Storage</div>
+                    <div style="font-size: 1.25rem; font-weight: 800; color: #0284c7;" id="lbl-rem-storage-calc">0.0 kWh</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tariff, Currency & Notes -->
+              <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                   <div class="form-group">
-                    <label class="form-label" for="record-currency-code">Currency Selection *</label>
+                    <label class="form-label" for="record-currency-code">Currency *</label>
                     <select id="record-currency-code" class="form-select" onchange="handleCurrencySelectionChange()">
                       <option value="INR">Indian Rupee (INR ₹)</option>
                       <option value="USD">US Dollar (USD $)</option>
                       <option value="EUR">Euro (EUR €)</option>
                       <option value="GBP">British Pound (GBP £)</option>
                     </select>
-                    <span class="form-hint">Updates all currency symbols on this page</span>
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label" for="record-tariff">Grid Electricity Tariff (<span class="currency-sym-label">₹</span>/kWh) *</label>
+                    <label class="form-label" for="record-tariff">Electricity Tariff (<span class="currency-sym-label">₹</span>/kWh) *</label>
                     <input type="number" step="0.0001" id="record-tariff" class="form-control" placeholder="9.0" min="0">
-                    <span class="form-hint">Example: ₹9/kWh (INR) or $0.12/kWh (USD)</span>
                   </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
-                  <label class="form-label" for="record-notes">Notes / Telemetry Details</label>
+                  <label class="form-label" for="record-notes">Notes / Details</label>
                   <input type="text" id="record-notes" class="form-control" placeholder="Optional notes (e.g. Inverter #1, morning peak output)...">
                 </div>
 
@@ -403,74 +357,10 @@
                   </button>
                 </div>
               </div>
-            </div>
 
-          </div>
-
-          <!-- ======================================================== -->
-          <!-- 7. LIVE CALCULATIONS PREVIEW (STICKY RIGHT SIDEBAR)      -->
-          <!-- ======================================================== -->
-          <div style="position: sticky; top: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-            <div class="card" style="background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-subtle)); box-shadow: var(--shadow-lg);">
-              <div class="card-header">
-                <div class="step-header">
-                  <span class="step-badge" style="background: #0284c7;">7</span>
-                  <h3 class="card-title" style="margin: 0;">Live Calculations Preview</h3>
-                </div>
-                <span class="badge badge-success">Real-Time</span>
-              </div>
-              <div class="card-body">
-                <!-- Detailed Storage Ledger Box -->
-                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
-                  <div style="font-weight: 700; font-size: 0.8125rem; color: var(--primary-700); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
-                    <span>🔋 Storage Ledger Breakdown</span>
-                    <span class="badge badge-neutral" style="font-size: 0.65rem;">Auto-Balanced</span>
-                  </div>
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.8125rem;">
-                    <div><span class="text-muted">Previous Storage:</span> <strong id="prev-storage-bal">0.0 kWh</strong></div>
-                    <div><span class="text-muted">Final Generation:</span> <strong id="preview-gen-val" class="text-primary">15.0 kWh</strong></div>
-                    <div><span class="text-muted">Renewable Consumed:</span> <strong id="preview-ren-con-val">0.0 kWh</strong></div>
-                    <div><span class="text-muted">Today's Surplus:</span> <strong id="preview-surplus-val" class="text-primary">+15.0 kWh</strong></div>
-                    <div><span class="text-muted">Storage Used:</span> <strong id="preview-stor-used-val" style="color: #0284c7;">0.0 kWh</strong></div>
-                    <div><span class="text-muted">Remaining Storage:</span> <strong id="preview-rem-storage" class="font-bold text-primary">15.0 kWh</strong></div>
-                  </div>
-                </div>
-
-                <div style="margin-bottom: 1.25rem;">
-                  <div class="text-xs text-muted font-semibold uppercase">Total Electricity Consumed</div>
-                  <div id="preview-total-consumed" class="font-bold text-2xl" style="color: var(--text-main); margin-top: 0.15rem;">0.0 kWh</div>
-                  <div class="text-xs text-muted">(Renewable Consumed + Storage Used + Grid Consumed)</div>
-                </div>
-
-                <div style="margin-bottom: 1.25rem;">
-                  <div class="text-xs text-muted font-semibold uppercase">Renewable Energy Share</div>
-                  <div id="preview-ren-pct" class="font-bold text-2xl text-primary" style="margin-top: 0.15rem;">0%</div>
-                  <div class="text-xs text-muted">((Clean Consumed / Total Consumed) × 100)</div>
-                </div>
-
-                <div style="margin-bottom: 1.25rem;">
-                  <div class="text-xs text-muted font-semibold uppercase">Estimated CO2 Avoided</div>
-                  <div id="preview-co2" class="font-bold text-2xl text-primary" style="margin-top: 0.15rem;">0.00 kg CO2</div>
-                  <div class="text-xs text-muted">(Clean Consumed × 0.82 kg/kWh)</div>
-                </div>
-
-                <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
-                  <div class="text-xs text-muted font-semibold uppercase">Estimated Cost Savings</div>
-                  <div id="preview-savings" class="font-bold text-3xl" style="color: #f59e0b; margin-top: 0.15rem;">₹0.00</div>
-                  <div class="text-xs text-muted">Calculated at <span id="preview-rate-label">₹9.00</span>/kWh tariff rate</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Zero Entry Automation UX Guide -->
-            <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.25rem; font-size: 0.8125rem; color: var(--text-muted);">
-              <div style="font-weight: 700; color: var(--text-main); margin-bottom: 0.375rem; display: flex; align-items: center; gap: 0.375rem;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                Automatic Tracking Workflow
-              </div>
-              Once you configure your sources in <strong>Section 1</strong> (e.g. Solar 15 kWh/day, Wind 10 kWh/day), daily generation is filled automatically for every date. You only enter actual consumption or occasional weather overrides!
             </div>
           </div>
+
         </div>
       </div>
     </main>

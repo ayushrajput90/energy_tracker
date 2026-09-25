@@ -155,7 +155,7 @@ const DEMO_SEED_DATA = {
     }
   ],
   activities: [
-    { id: 1, user_id: 1, action_type: 'LOGIN', description: 'User signed into Renewable Tracker', timestamp: new Date().toISOString() },
+    { id: 1, user_id: 1, action_type: 'LOGIN', description: 'User signed into Renewable Energy Usage Tracker', timestamp: new Date().toISOString() },
     { id: 2, user_id: 1, action_type: 'CONFIG_SOURCE', description: 'Configured Solar (5 kW, 15 kWh/day) and Wind (3 kW, 10 kWh/day)', timestamp: new Date(Date.now() - 3600000).toISOString() },
     { id: 3, user_id: 1, action_type: 'GENERATION_OVERRIDE', description: 'Applied weather override for Solar on 2026-08-20: 6.0 kWh (Heavy rain)', timestamp: new Date(Date.now() - 7200000).toISOString() },
     { id: 4, user_id: 1, action_type: 'ADD_RECORD', description: 'Recorded 2026-08-20 consumption with 1.0 kWh surplus added to storage', timestamp: new Date(Date.now() - 10800000).toISOString() }

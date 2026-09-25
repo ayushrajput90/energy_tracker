@@ -41,7 +41,7 @@ async function initAddEnergyPage() {
   ]);
 
   // Bind live calculation listeners to all inputs
-  ['record-actual-gen', 'record-ren-con', 'record-storage-used', 'record-grid-con', 'record-tariff'].forEach(id => {
+  ['record-actual-gen', 'record-ren-con', 'record-storage-used', 'record-tariff'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('input', updateLivePreview);
@@ -263,7 +263,7 @@ function updateLivePreview() {
   const actualVal = parseFloat(document.getElementById('record-actual-gen')?.value);
   const renVal = parseFloat(document.getElementById('record-ren-con')?.value || 0);
   const storUsedVal = parseFloat(document.getElementById('record-storage-used')?.value || 0);
-  const gridVal = parseFloat(document.getElementById('record-grid-con')?.value || 0);
+  const gridVal = 0.0;
   const tariffVal = parseFloat(document.getElementById('record-tariff')?.value || 9.0);
   const curCode = document.getElementById('record-currency-code')?.value || 'INR';
   const sym = (CURRENCY_INFO[curCode] || {}).symbol || '₹';
@@ -298,42 +298,7 @@ function updateLivePreview() {
   if (fSurp) fSurp.textContent = surplusVal > 0 ? `+${surplusVal.toFixed(1)}` : '0.0';
   if (fRem) fRem.textContent = `${remainingStorage.toFixed(1)} kWh`;
 
-  // Live Calculations Right Preview Card
-  const totalCleanUsed = renVal + storUsedVal;
-  const totalConsumed = totalCleanUsed + gridVal;
-  const renPct = totalConsumed > 0 ? Math.min(Math.round((totalCleanUsed / totalConsumed) * 1000) / 10, 100) : 0;
-  const co2Avoided = (totalCleanUsed * CONFIG.DEFAULT_GRID_EMISSION_FACTOR).toFixed(2);
-  const costSavings = (totalCleanUsed * tariffVal).toFixed(2);
-
-  const elPrevGen = document.getElementById('preview-gen-val');
-  if (elPrevGen) elPrevGen.textContent = `${finalGen.toFixed(1)} kWh`;
-
-  const elPrevRen = document.getElementById('preview-ren-con-val');
-  if (elPrevRen) elPrevRen.textContent = `${renVal.toFixed(1)} kWh`;
-
-  const elPrevSurp = document.getElementById('preview-surplus-val');
-  if (elPrevSurp) elPrevSurp.textContent = surplusVal > 0 ? `+${surplusVal.toFixed(1)} kWh` : '0.0 kWh';
-
-  const elPrevStorUsed = document.getElementById('preview-stor-used-val');
-  if (elPrevStorUsed) elPrevStorUsed.textContent = `${storUsedVal.toFixed(1)} kWh`;
-
-  const elPrevRemStor = document.getElementById('preview-rem-storage');
-  if (elPrevRemStor) elPrevRemStor.textContent = `${remainingStorage.toFixed(1)} kWh`;
-
-  const elTot = document.getElementById('preview-total-consumed');
-  if (elTot) elTot.textContent = `${totalConsumed.toFixed(1)} kWh`;
-
-  const elPct = document.getElementById('preview-ren-pct');
-  if (elPct) elPct.textContent = `${renPct}%`;
-
-  const elCo2 = document.getElementById('preview-co2');
-  if (elCo2) elCo2.textContent = `${co2Avoided} kg CO2`;
-
-  const elSav = document.getElementById('preview-savings');
-  if (elSav) elSav.textContent = `${sym}${parseFloat(costSavings).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-  const elRate = document.getElementById('preview-rate-label');
-  if (elRate) elRate.textContent = `${sym}${tariffVal.toFixed(2)}`;
+  // Formula and Comparison Box values updated above
 }
 
 async function handleSaveEnergyRecord(event, addAnother = false) {
@@ -346,7 +311,7 @@ async function handleSaveEnergyRecord(event, addAnother = false) {
   const reasonVal = document.getElementById('record-override-reason').value;
   const renVal = parseFloat(document.getElementById('record-ren-con').value);
   const storUsedVal = parseFloat(document.getElementById('record-storage-used').value || 0);
-  const gridVal = parseFloat(document.getElementById('record-grid-con').value || 0);
+  const gridVal = 0.0;
   const tariffVal = parseFloat(document.getElementById('record-tariff').value || 9.0);
   const notesVal = document.getElementById('record-notes').value;
 
@@ -392,7 +357,7 @@ async function handleSaveEnergyRecord(event, addAnother = false) {
     energy_generated_kwh: finalGen,
     renewable_energy_consumed_kwh: renVal,
     storage_used_kwh: storUsedVal,
-    grid_energy_consumed_kwh: isNaN(gridVal) ? 0 : gridVal,
+    grid_energy_consumed_kwh: gridVal,
     is_override: isOverride,
     automatic_generation_kwh: currentAutoGeneration,
     override_generation_kwh: isOverride ? finalGen : null,
@@ -413,7 +378,6 @@ async function handleSaveEnergyRecord(event, addAnother = false) {
     if (addAnother) {
       document.getElementById('record-ren-con').value = '';
       document.getElementById('record-storage-used').value = '0.0';
-      document.getElementById('record-grid-con').value = '0.0';
       document.getElementById('record-notes').value = '';
       document.getElementById('record-source').focus();
       updateLivePreview();

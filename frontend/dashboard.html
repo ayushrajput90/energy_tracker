@@ -22,7 +22,7 @@
           </svg>
         </div>
         <div>
-          <div class="sidebar-brand-title">Renewable Tracker</div>
+          <div class="sidebar-brand-title">Renewable Energy Usage Tracker</div>
           <div class="sidebar-brand-subtitle">Clean Energy Platform</div>
         </div>
       </div>
@@ -107,10 +107,11 @@
       </header>
 
       <div class="content-body">
+        <!-- Header & Date Range Selector -->
         <div class="page-header" style="align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
           <div>
             <h1 class="page-title">Energy Overview</h1>
-            <p class="page-subtitle">Automatic renewable telemetry, persistent storage ledger & aggregated performance</p>
+            <p class="page-subtitle">Renewable telemetry, persistent storage ledger & performance metrics</p>
           </div>
           <div class="page-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
             <!-- Period Selector -->
@@ -121,17 +122,16 @@
                 <option value="this_week">This Week</option>
                 <option value="this_month">This Month</option>
                 <option value="this_year">This Year</option>
-                <option value="all">All Time</option>
+                <option value="all" selected>All Time</option>
                 <option value="custom">Custom Date Range</option>
               </select>
             </div>
 
             <!-- Custom date range inputs -->
             <div id="dash-custom-range" style="display: none; align-items: center; gap: 0.375rem;">
-              <input type="date" id="dash-start-date" class="form-control" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+              <input type="date" id="dash-start-date" class="form-control" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.75rem;" onchange="loadDashboard()">
               <span class="text-muted text-xs">to</span>
-              <input type="date" id="dash-end-date" class="form-control" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.75rem;">
-              <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">Apply</button>
+              <input type="date" id="dash-end-date" class="form-control" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.75rem;" onchange="loadDashboard()">
             </div>
 
             <a href="add-energy.html" class="btn btn-primary">
@@ -141,108 +141,75 @@
           </div>
         </div>
 
-        <!-- 8 Core KPI Cards Grid (Preserved & Enhanced) -->
-        <div class="kpi-grid">
-          <!-- 1. Generated -->
+        <!-- 6 Core Summary Cards Grid -->
+        <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 2rem;">
+          <!-- 1. Renewable Energy Generated -->
           <div class="kpi-card kpi-emerald">
             <div class="kpi-header">
-              <span class="kpi-title">Renewable Generated</span>
+              <span class="kpi-title">Renewable Energy Generated</span>
               <div class="kpi-icon-wrap">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
               </div>
             </div>
             <div>
               <div class="kpi-value"><span id="kpi-total-gen">0.0</span> <span class="kpi-unit">kWh</span></div>
-              <div class="kpi-footer">Across all clean sources</div>
             </div>
           </div>
 
-          <!-- 2. Renewable Consumed -->
+          <!-- 2. Renewable Energy Consumed -->
           <div class="kpi-card kpi-cyan">
             <div class="kpi-header">
-              <span class="kpi-title">Renewable Consumed</span>
+              <span class="kpi-title">Renewable Energy Consumed</span>
               <div class="kpi-icon-wrap">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
               </div>
             </div>
             <div>
               <div class="kpi-value"><span id="kpi-total-ren-con">0.0</span> <span class="kpi-unit">kWh</span></div>
-              <div class="kpi-footer">Clean power utilized</div>
             </div>
           </div>
 
-          <!-- 3. Total Consumed -->
-          <div class="kpi-card kpi-blue">
-            <div class="kpi-header">
-              <span class="kpi-title">Total Electricity</span>
-              <div class="kpi-icon-wrap">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-              </div>
-            </div>
-            <div>
-              <div class="kpi-value"><span id="kpi-total-con">0.0</span> <span class="kpi-unit">kWh</span></div>
-              <div class="kpi-footer">Renewable + Grid load</div>
-            </div>
-          </div>
-
-          <!-- 4. Renewable % -->
-          <div class="kpi-card kpi-amber">
-            <div class="kpi-header">
-              <span class="kpi-title">Renewable Share</span>
-              <div class="kpi-icon-wrap">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              </div>
-            </div>
-            <div>
-              <div class="kpi-value"><span id="kpi-ren-pct">0%</span></div>
-              <div class="kpi-footer">Clean Energy Adoption</div>
-            </div>
-          </div>
-
-          <!-- 5. Estimated CO2 Avoided -->
+          <!-- 3. CO2 Emissions Avoided -->
           <div class="kpi-card kpi-emerald">
             <div class="kpi-header">
-              <span class="kpi-title">CO2 Avoided (Est.)</span>
+              <span class="kpi-title">CO₂ Emissions Avoided</span>
               <div class="kpi-icon-wrap">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path></svg>
               </div>
             </div>
             <div>
               <div class="kpi-value"><span id="kpi-co2-avoided">0.0</span> <span class="kpi-unit">kg</span></div>
-              <div class="kpi-footer">Emissions prevented</div>
             </div>
           </div>
 
-          <!-- 6. Grid Displaced -->
-          <div class="kpi-card kpi-purple">
-            <div class="kpi-header">
-              <span class="kpi-title">Grid Displaced</span>
-              <div class="kpi-icon-wrap">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-              </div>
-            </div>
-            <div>
-              <div class="kpi-value"><span id="kpi-grid-displaced">0.0</span> <span class="kpi-unit">kWh</span></div>
-              <div class="kpi-footer">Fossil grid offset</div>
-            </div>
-          </div>
-
-          <!-- 7. Cost Savings -->
+          <!-- 4. Cost Savings -->
           <div class="kpi-card kpi-amber">
             <div class="kpi-header">
-              <span class="kpi-title">Cost Savings (Est.)</span>
+              <span class="kpi-title">Cost Savings</span>
               <div class="kpi-icon-wrap">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
               </div>
             </div>
             <div>
               <div class="kpi-value"><span id="kpi-savings">₹0.00</span></div>
-              <div class="kpi-footer">Calculated at user tariff</div>
             </div>
           </div>
 
-          <!-- 8. Active Goals -->
+          <!-- 5. Stored Renewable Energy -->
           <div class="kpi-card kpi-blue">
+            <div class="kpi-header">
+              <span class="kpi-title">Stored Renewable Energy</span>
+              <div class="kpi-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div class="kpi-value"><span id="kpi-storage-bal">0.0</span> <span class="kpi-unit">kWh</span></div>
+            </div>
+          </div>
+
+          <!-- 6. Active Goals -->
+          <div class="kpi-card kpi-purple">
             <div class="kpi-header">
               <span class="kpi-title">Active Goals</span>
               <div class="kpi-icon-wrap">
@@ -250,168 +217,24 @@
               </div>
             </div>
             <div>
-              <div class="kpi-value"><span id="kpi-goals-count">0 Active</span></div>
-              <div class="kpi-footer">Tracking sustainability</div>
+              <div class="kpi-value"><span id="kpi-goals-count">No Active Goals</span></div>
             </div>
           </div>
         </div>
 
-        <!-- NEW: Automatic Generation, Storage & System Status Banner -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-          <!-- Auto Gen Card -->
-          <div class="card" style="margin-bottom: 0; padding: 1.25rem;">
-            <div class="text-xs text-muted font-bold" style="text-transform: uppercase;">Today's Renewable Gen</div>
-            <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-top: 0.35rem;">
-              <span id="dash-today-gen" class="font-bold text-2xl text-primary">0.0 kWh</span>
-              <span id="dash-gen-status-badge" class="badge badge-success">Automatic</span>
-            </div>
-            <div class="text-xs text-muted" style="margin-top: 0.25rem;">Expected: <span id="dash-auto-expected">0.0 kWh</span></div>
-          </div>
-
-          <!-- Storage Balance Card -->
-          <div class="card" style="margin-bottom: 0; padding: 1.25rem;">
-            <div class="text-xs text-muted font-bold" style="text-transform: uppercase;">Stored Renewable Energy</div>
-            <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-top: 0.35rem;">
-              <span id="dash-storage-bal" class="font-bold text-2xl" style="color: #0284c7;">0.0 kWh</span>
-              <span class="badge badge-neutral">Available</span>
-            </div>
-            <div class="text-xs text-muted" style="margin-top: 0.25rem;">Surplus stored from generation</div>
-          </div>
-
-          <!-- Today's Surplus / Dispatched Card -->
-          <div class="card" style="margin-bottom: 0; padding: 1.25rem;">
-            <div class="text-xs text-muted font-bold" style="text-transform: uppercase;">Today's Storage Activity</div>
-            <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-top: 0.35rem;">
-              <span id="dash-today-surplus" class="font-bold text-xl text-primary">+0.0 kWh</span>
-              <span class="text-xs text-muted">/ Used: <strong id="dash-today-storage-used" class="text-muted">0.0 kWh</strong></span>
-            </div>
-            <div class="text-xs text-muted" style="margin-top: 0.25rem;">Daily battery throughput</div>
-          </div>
-
-          <!-- Installed Capacity & Sources -->
-          <div class="card" style="margin-bottom: 0; padding: 1.25rem;">
-            <div class="text-xs text-muted font-bold" style="text-transform: uppercase;">Configured Capacity</div>
-            <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-top: 0.35rem;">
-              <span id="dash-total-cap" class="font-bold text-2xl" style="color: var(--text-main);">0.0 kW</span>
-              <span id="dash-active-sources-count" class="badge badge-success">0 Sources</span>
-            </div>
-            <div class="text-xs text-muted" style="margin-top: 0.25rem;">Total installed clean capacity</div>
-          </div>
-        </div>
-
-        <!-- Period Summary Row -->
-        <div class="charts-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 2rem;">
-          <div class="card" style="margin-bottom: 0;">
-            <div class="card-header">
-              <h3 class="card-title">Today's Summary</h3>
-              <span class="badge badge-success">Live Daily</span>
-            </div>
-            <div class="card-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-              <div>
-                <div class="text-sm text-muted">Generation</div>
-                <div id="sum-today-gen" class="font-bold text-xl text-primary">0.0 kWh</div>
-              </div>
-              <div>
-                <div class="text-sm text-muted">Total Consumed</div>
-                <div id="sum-today-con" class="font-bold text-xl">0.0 kWh</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-bottom: 0;">
-            <div class="card-header">
-              <h3 class="card-title">Selected Period Summary</h3>
-              <span class="badge badge-neutral" id="dash-period-badge">All Time</span>
-            </div>
-            <div class="card-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-              <div>
-                <div class="text-sm text-muted">Total Generation</div>
-                <div id="sum-month-gen" class="font-bold text-xl text-primary">0.0 kWh</div>
-              </div>
-              <div>
-                <div class="text-sm text-muted">Total Consumed</div>
-                <div id="sum-month-con" class="font-bold text-xl">0.0 kWh</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Interactive Charts Row -->
-        <div class="charts-grid">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Source Performance Breakdown</h3>
-            </div>
-            <div class="card-body">
-              <div class="chart-container">
-                <canvas id="dashboardGenChart"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Energy Generation Distribution</h3>
-            </div>
-            <div class="card-body">
-              <div class="chart-container">
-                <canvas id="dashboardSourceChart"></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recent Records and Activity Timeline -->
-        <div class="charts-grid">
-          <!-- Recent Energy Records Table -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Recent Energy Entries</h3>
-              <a href="records.html" class="text-sm text-primary font-semibold">View All &rarr;</a>
-            </div>
-            <div class="card-body" style="padding: 0;">
-              <div class="table-responsive">
-                <table class="data-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Source</th>
-                      <th>Mode</th>
-                      <th>Generated</th>
-                      <th>Consumed</th>
-                      <th>Renewable %</th>
-                    </tr>
-                  </thead>
-                  <tbody id="recent-records-tbody">
-                    <tr><td colspan="6" class="text-center text-muted" style="padding: 1.5rem;">Loading recent records...</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recent Audit Activity Log -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Audit Activity Feed</h3>
-            </div>
-            <div class="card-body" id="recent-activities-list" style="max-height: 320px; overflow-y: auto;">
-              <div class="text-center text-muted" style="padding: 1.5rem;">Loading activities...</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Smart Insights Preview -->
+        <!-- Single Bar Chart: Renewable Energy Generation vs Consumption -->
         <div class="card">
-          <div class="card-header">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-              <h3 class="card-title">Smart Data-Driven Insights</h3>
-            </div>
-            <a href="insights.html" class="text-sm text-primary font-semibold">All Insights &rarr;</a>
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="card-title">Renewable Energy Generation vs Consumption</h3>
+            <span class="badge badge-neutral" id="dash-chart-period-badge">All Time</span>
           </div>
-          <div class="card-body" id="dashboard-insights-container">
-            <div class="text-center text-muted">Analyzing energy patterns...</div>
+          <div class="card-body">
+            <div id="dashboard-chart-wrapper" class="chart-container" style="height: 380px; position: relative;">
+              <canvas id="dashboardGenChart"></canvas>
+            </div>
+            <div id="dashboard-chart-empty" style="display: none; text-align: center; padding: 3rem; color: var(--text-muted);">
+              No energy records found for the selected period.
+            </div>
           </div>
         </div>
 

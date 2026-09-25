@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from backend.extensions import db
@@ -35,6 +35,73 @@ def get_generation_overview():
 
     telemetry = get_daily_generation_telemetry(user_id, target_date)
     return jsonify(telemetry), 200
+
+
+@generation_bp.route('/history', methods=['GET'])
+@jwt_required()
+def get_daily_generation_history():
+    user_id = int(get_jwt_identity())
+    source_id = request.args.get('source_id', type=int)
+    source_type = request.args.get('source_type', '').strip()
+
+    sources_query = RenewableSource.query.filter_by(user_id=user_id)
+    if source_id:
+        sources_query = sources_query.filter(RenewableSource.id == source_id)
+    elif source_type and source_type.lower() not in ['all', 'all sources']:
+        sources_query = sources_query.filter(RenewableSource.source_type == source_type)
+
+    sources = sources_query.all()
+    if not sources:
+        return jsonify({'history': [], 'sources': [], 'total_count': 0}), 200
+
+    all_overrides = DailyGenerationOverride.query.filter_by(user_id=user_id).all()
+    override_map = {(o.source_id, o.date): o for o in all_overrides}
+
+    today = date.today()
+    history = []
+
+    for src in sources:
+        start_d = src.effective_from if isinstance(src.effective_from, date) else datetime.strptime(str(src.effective_from), '%Y-%m-%d').date()
+        if start_d > today:
+            continue
+
+        cur_d = start_d
+        while cur_d <= today:
+            config = src.get_effective_config_for_date(cur_d)
+            if config:
+                auto_val = float(config['expected_daily_generation_kwh'])
+                ov = override_map.get((src.id, cur_d))
+
+                if ov:
+                    gen_val = float(ov.override_generation_kwh)
+                    status = 'Override'
+                    is_override = True
+                    reason = ov.reason
+                else:
+                    gen_val = auto_val
+                    status = 'Auto'
+                    is_override = False
+                    reason = None
+
+                history.append({
+                    'source_id': src.id,
+                    'source_type': src.source_type,
+                    'date': cur_d.isoformat(),
+                    'generated_kwh': round(gen_val, 2),
+                    'automatic_generation_kwh': round(auto_val, 2),
+                    'status': status,
+                    'is_override': is_override,
+                    'reason': reason
+                })
+            cur_d += timedelta(days=1)
+
+    history.sort(key=lambda x: (x['date'], x['source_type']), reverse=True)
+
+    return jsonify({
+        'history': history,
+        'sources': [s.to_dict() for s in sources],
+        'total_count': len(history)
+    }), 200
 
 
 @generation_bp.route('/daily', methods=['GET'])

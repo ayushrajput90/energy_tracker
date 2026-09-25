@@ -15,7 +15,8 @@ from backend.services.aggregation import (
     get_filtered_records_query,
     aggregate_by_source,
     calculate_user_storage_balance,
-    get_daily_generation_telemetry
+    get_daily_generation_telemetry,
+    aggregate_records_by_time_period
 )
 from backend.services.insights import generate_insights
 
@@ -107,6 +108,31 @@ def get_dashboard_stats():
             'description': g.description or g.goal_type
         })
 
+    # Time series chart aggregation for Generation vs Consumption
+    chart_period = 'daily'
+    if period_param in ['this_year', 'year', 'yearly']:
+        chart_period = 'monthly'
+    elif period_param in ['all', 'all_time']:
+        if all_records and len(all_records) > 0:
+            min_year = min(r.date.year for r in all_records)
+            max_year = max(r.date.year for r in all_records)
+            chart_period = 'yearly' if (max_year - min_year) >= 2 else 'monthly'
+        else:
+            chart_period = 'monthly'
+    elif period_param == 'custom' and start_date and end_date:
+        days_span = (end_date - start_date).days
+        if days_span > 365:
+            chart_period = 'yearly'
+        elif days_span > 31:
+            chart_period = 'monthly'
+        else:
+            chart_period = 'daily'
+
+    time_series = aggregate_records_by_time_period(period_records, period=chart_period, emission_factor=emission_factor, default_tariff=tariff)
+    chart_labels = [item['period_label'] for item in time_series]
+    chart_generated = [item['total_generated_kwh'] for item in time_series]
+    chart_consumed = [item['total_renewable_consumed_kwh'] for item in time_series]
+
     return jsonify({
         'overall': overall_agg,
         'period_summary': period_agg,
@@ -116,6 +142,12 @@ def get_dashboard_stats():
         'sources_summary': list(sources_data.values()),
         'active_goals': goals_summary,
         'active_goals_count': len(active_goals),
+        'chart_data': {
+            'labels': chart_labels,
+            'generated': chart_generated,
+            'consumed': chart_consumed,
+            'period': chart_period
+        },
         'storage': {
             'available_kwh': round(storage_balance, 4),
             'today_storage_used_kwh': round(today_agg.get('total_storage_used_kwh', 0.0), 4),

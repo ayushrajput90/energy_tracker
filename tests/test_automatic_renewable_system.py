@@ -1,5 +1,5 @@
 import pytest
-from datetime import date
+from datetime import date, timedelta
 from backend.app import create_app
 from backend.config import Config
 from backend.extensions import db
@@ -406,3 +406,53 @@ def test_23_multicurrency_support(client):
         settings = res.get_json()['settings']
         assert settings['currency_code'] == code
         assert settings['currency_symbol'] == sym
+
+
+# -------------------------------------------------------------
+# 24. Daily Automatic Generation History
+# -------------------------------------------------------------
+def test_24_daily_generation_history(client):
+    today = date.today()
+    start_date = today - timedelta(days=2)
+
+    # 1. Configure Solar Source with effective_from 2 days ago
+    res_src = client.post('/api/sources', json={
+        'source_type': 'Solar',
+        'installed_capacity_kw': 5.0,
+        'expected_daily_generation_kwh': 15.0,
+        'effective_from': start_date.isoformat(),
+        'active': True
+    })
+    assert res_src.status_code == 201
+    source_id = res_src.get_json()['source']['id']
+
+    # 2. Add manual override for yesterday
+    yesterday = today - timedelta(days=1)
+    res_ov = client.post('/api/generation/overrides', json={
+        'date': yesterday.isoformat(),
+        'source_id': source_id,
+        'override_generation_kwh': 6.5,
+        'reason': 'Heavy rain and cloud cover'
+    })
+    assert res_ov.status_code == 201
+
+    # 3. Query daily generation history
+    res_hist = client.get('/api/generation/history')
+    assert res_hist.status_code == 200
+    data = res_hist.get_json()
+    assert 'history' in data
+    history = data['history']
+    assert len(history) == 3  # start_date (2 days ago), yesterday (1 day ago), today
+
+    # Verify yesterday entry has Override status
+    yest_entry = next(h for h in history if h['date'] == yesterday.isoformat())
+    assert yest_entry['status'] == 'Override'
+    assert yest_entry['is_override'] is True
+    assert yest_entry['generated_kwh'] == 6.5
+    assert yest_entry['reason'] == 'Heavy rain and cloud cover'
+
+    # Verify today and start_date entries have Auto status
+    today_entry = next(h for h in history if h['date'] == today.isoformat())
+    assert today_entry['status'] == 'Auto'
+    assert today_entry['is_override'] is False
+    assert today_entry['generated_kwh'] == 15.0
